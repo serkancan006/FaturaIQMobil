@@ -7,7 +7,7 @@ type UserListType = {
     email: string
     firstName: string
     lastName: string
-    isActive: string
+    isActive: boolean
 }
 
 

@@ -1,38 +1,38 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { useAuth } from "../hooks/AuthContext"; // Path to your AuthContext
+import { Text } from "react-native";
+import { useAuth } from "./AuthContext"; // Mevcut AuthContext'inizi kullanın
+import { NavigationProp } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 
 interface AuthorizationProps {
   allowedRoles: string[];
   redirectTo?: string;
+  children: any; // Çocuk bileşenleri
 }
 
 const Authorization: React.FC<AuthorizationProps> = ({
   allowedRoles,
-  redirectTo = "Login",
+  redirectTo = "Login", // Varsayılan olarak Login sayfasına yönlendirme
+  children,
 }) => {
-  const { isAuthenticated, userRoles } = useAuth();
-  const navigation = useNavigation();
+  const { isAuthenticated, userRoles } = useAuth(); // AuthContext'ten alınan veriler
+  const navigation = useNavigation<NavigationProp<any>>();
 
-  // If not authenticated or no roles
+  // Eğer kullanıcı doğrulanmamışsa ya da roller tanımlanmışsa, yönlendirme yap
   if (!isAuthenticated || !userRoles) {
-    navigation.navigate(redirectTo);
-    return null;
+    navigation.navigate(redirectTo); // Login sayfasına yönlendir
+    return <Text>Yönlendiriliyor...</Text>;
   }
 
-  // Check if user has any of the allowed roles
+  // Kullanıcının rollerinden en az bir tanesi uygun mu?
   const hasAccess = userRoles.some((role) => allowedRoles.includes(role));
 
-  return hasAccess ? (
-    <View>
-      <Text>Authorized Content</Text>
-    </View>
-  ) : (
-    <View>
-      <Text>Unauthorized Access</Text>
-    </View>
-  );
+  if (!hasAccess) {
+    navigation.navigate("Unauthorized"); // Erişim reddedildiyse Unauthorized sayfasına yönlendir
+    return <Text>Yetkisiz Erişim</Text>;
+  }
+
+  return <>{children}</>; // Eğer yetki varsa, çocuk bileşenleri render et
 };
 
 export default Authorization;

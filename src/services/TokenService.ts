@@ -7,9 +7,7 @@ const TokenService = {
   // Token'ı kaydet
   setTokenAsync: async (token: string): Promise<void> => {
     try {
-      console.log("Token kaydediliyor:", token);
       await AsyncStorage.setItem(TOKEN_KEY, token);
-      console.log("Token kaydedildi:", token);
     } catch (error) {
       console.error("Token kaydedilemedi", error);
     }
@@ -30,7 +28,6 @@ const TokenService = {
   removeTokenAsync: async (): Promise<void> => {
     try {
       await AsyncStorage.removeItem(TOKEN_KEY);
-      console.log("Token silindi");
     } catch (error) {
       console.error("Token silinemedi", error);
     }

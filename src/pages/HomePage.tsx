@@ -4,7 +4,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import TokenService from "../services/TokenService";
 import { useAuth } from "../hooks/AuthContext";
 
-const HomePage = ({ navigation }: any) => {
+const HomePage = () => {
   const { isAuthenticated, userRoles } = useAuth();
   const [token, setToken] = useState<string>("Yükleniyor...");
 

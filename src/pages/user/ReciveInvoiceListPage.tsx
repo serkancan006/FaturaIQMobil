@@ -66,15 +66,17 @@ const invoiceColumns: TableColumn[] = [
   },
 ];
 
-const SentInvoiceListPage = () => {
-  const [sentInvoices, setSentInvoices] = useState<ListInvoiceType[]>([]);
+const ReceivedInvoiceListPage = () => {
+  const [receivedInvoices, setReceivedInvoices] = useState<ListInvoiceType[]>(
+    []
+  );
   const [page, setPage] = useState<number>(0);
   const [itemsPerPage, onItemsPerPageChange] = useState<number>(3);
   const numberOfItemsPerPageList = [2, 3, 4, 10, 20, 50];
 
   const fetchData = async () => {
-    const response = await InvoiceService.getSentInvoices();
-    setSentInvoices(response.data);
+    const response = await InvoiceService.getReceiverInvoices(); // ← burası değişti
+    setReceivedInvoices(response.data);
   };
 
   useFocusEffect(
@@ -85,13 +87,13 @@ const SentInvoiceListPage = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Gönderilen Faturalar Sayfası</Text>
+      <Text style={styles.title}>Alınan Faturalar Sayfası</Text>
       <GenericTable
-        data={sentInvoices}
+        data={receivedInvoices}
         columns={invoiceColumns}
         itemsPerPage={itemsPerPage}
         setPage={setPage}
-        numberOfPages={Math.ceil(sentInvoices.length / itemsPerPage)}
+        numberOfPages={Math.ceil(receivedInvoices.length / itemsPerPage)}
         onItemsPerPageChange={onItemsPerPageChange}
         itemsPerPageList={numberOfItemsPerPageList}
         page={page}
@@ -132,4 +134,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SentInvoiceListPage;
+export default ReceivedInvoiceListPage;
