@@ -16,12 +16,13 @@ import { useAuth } from "../hooks/AuthContext";
 const SignIn = () => {
   const { loginAsync, logoutAsync } = useAuth();
 
-  const onSubmit = async (values: SignInType) => {
+  const onSubmit = async (values: SignInType, actions: any) => {
     const response = await AuthService.signIn(values);
     if (response.status === 200) {
       await loginAsync(response.data.token);
       Alert.alert("Giriş Başarılı","Kullanıcılar sayfasına yönlendiriliyorsunuz");
     }
+    actions.resetForm();
   };
 
   const handleLogout = async () => {
